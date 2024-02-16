@@ -30,7 +30,7 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        NEW_VERSION: ${{ steps.version.outputs.version }} 
+        
       run: |
         echo "Iniciando login"
         echo "New version: $NEW_VERSION!!!!!!!!!!"
@@ -38,15 +38,19 @@ jobs:
         echo "Fin del login"
 
             
-    # - name: Build Docker Image
-    #   run: |
-    #     docker build -t ebuitron/docker-graphql:0.0.2 .
-    #     docker build -t ebuitron/docker-graphql:latest .
+    - name: Build Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }} 
+      run: |
+        docker build -t ebuitron/docker-graphql:$NEW_VERSION .
+        docker build -t ebuitron/docker-graphql:latest .
 
-    # - name: Push Docker Image
-    #   run: |
-    #     docker push ebuitron/docker-graphql:0.0.2
-    #     docker push ebuitron/docker-graphql:latest
+    - name: Push Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }} 
+      run: |
+        docker push ebuitron/docker-graphql:$NEW_VERSION
+        docker push ebuitron/docker-graphql:latest
         
       
         
